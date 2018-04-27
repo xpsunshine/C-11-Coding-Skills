@@ -1,0 +1,10 @@
+# cd ./Coding\ Skills/ //进入待创建本地仓库的文件夹
+# git init //初始化
+# ls -al //可以查看到生成了.git文件
+# git status //查看状态
+# git add template\ metaprogramming //将待上传的文件从 编辑区 放置到 临时区
+# git status //查看状态
+# git commit -m "first commit" //将待上传的文件从 临时区 放置到 工作区
+# git remote add origin https://github.com/xpsunshine/C-11-Coding-Skills.git //连接本地仓库至对应的 github 地址仓库
+# git push -u origin master //将文件从 工作区 推送至 github 服务器
+
