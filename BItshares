@@ -1,0 +1,35 @@
+
+Sources
+
+The sources are located at github and can be downloaded with git.
+
+## git clone https://github.com/bitshares/bitshares-core
+
+Since the repository makes use of so called submodules which are repositories on their own, we need to refresh those.
+
+## git submodule update --init --recursive
+
+Graphene API 通讯方式
+
+Bitshares 系统共支持两种 API 调用方式：
+1、WebSocket Calls - 长连接调用
+2、Remote Procedure Calls - HTTP 方式调用
+
+API 调用流程
+Bitshares 系统的完整客户端节点提供了一系列可以通过 WebSocket 方式访问的API，但根据官方文档中描述的API调用流程，应该首先有一个初始化的调用过程：
+
+    1.首先应该登录到完整节点 :
+
+{"id":0, "method":"call", "params":[1, "login", ["",""]]}
+
+
+    2.然后获取指定类型的API标识 :
+
+// 你可以动态的修改 “database” 属性，来获取不同的 API 类型请求标识。
+{"id":0, "method":"call", "params":[1, "database", []]}
+
+// 此次请求调用返回结果里面的 "result" 值，就是 "database" 类型 API 的标识符。 
+{"id":2, "result":2}
+
+3.你可以多次的进行第二步操作，拿到不同类型的 API 标识符，最后只需要之前介绍过的 API 数据结构指定好 id 与 params 参数格式，即可调用所有公开的 API 接口。
+

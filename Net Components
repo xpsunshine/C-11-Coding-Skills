@@ -1,0 +1,22 @@
+Bitshares和其他加密货币类似，每一笔交易也是需要等待多次确认。
+
+网络组成：
+1、P2P网络
+BItshares客户端使用P2P网路连接和广播交易，生成完整节点的区块block，将捕获此次交易，并将交易添加到新的区块中进行验证。
+2、可信赖的全节点 Trusted Full Node
+直接连接到网络。（其中，网络指的是底层区块链网络吗？，通过Full Node进行区块数据的查询吗？）
+
+Full Node ，包括两种:
+a) non-block producing witness nodes.
+b) block producing witness nodes.
+服务商（机构）运行和维护自己的full nodes。
+
+Full node的启动（launched）
+## ./programs/witness_node/witness_node
+
+3、钱包节点 Wallet
+该节点用于发起（客户取款），而且连接到可信的全节点。
+
+wallet--》Trusted Full Node--》区块链网络
+
+

@@ -1,0 +1,19 @@
+API Guide
+
+This page serves as a comprehensive reference for the Graphene API and its blockchain, such as BitShares 2.0 and MUSE.
+
+APIs are separated into two categories, namely:
+
+    1、the Blockchain API which is used to query blockchain data (account, assets, trading history, etc.) and
+    2、the Wallet API which has your private keys loaded and is required when interacting with the blockchain with new transactions.
+
+Note
+
+In order to interface with the wallet, you need to run the CLI Wallet. Neither the light-wallet, nor the hosted web wallet will provide you with an API.
+
+The wallet (cli_wallet) requires a running full node to connect to because it does not offer P2P or blockchain capabilities directly.
+钱包需要一个正在运行的完整节点来连接，因为它不直接提供P2P或区块链功能。
+
+wallet.cpp:
+1、struct wallet_data
+2、class wallet_api_impl

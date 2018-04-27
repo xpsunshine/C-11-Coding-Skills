@@ -1,0 +1,40 @@
+将一笔交易广播到block中的两种方式：
+method1":
+void graphene::app::network_broadcast_api::broadcast_transaction(const signed_transaction &trx)
+参数：trx为待广播的交易；
+实现：
+    void network_broadcast_api::broadcast_transaction(const signed_transaction& trx)
+    {
+       trx.validate(); //验证
+       _app.chain_database()->push_transaction(trx);
+       if( _app.p2p_node() != nullptr )
+          _app.p2p_node()->broadcast_transaction(trx); //链上的递归传输
+    }
+
+通过上面的函数，将一笔交易广播到网络中。
+1、在广播之前，交易将在本地数据库中检查有效性。若错误则丢弃该交易，而不会进行广播。
+2、网络广播API可以通过websockets从完整节点获得。
+ a）建立websocket连接；
+
+method2:
+void graphene::app::network_broadcast_api::broadcast_transaction_with_callback(confirmation_callback cb, const signed_transaction &trx)
+参数：trx为待广播的交易；
+实现：
+    void network_broadcast_api::broadcast_transaction_with_callback(confirmation_callback cb,    	const signed_transaction& trx)
+    {
+       trx.validate();
+       _callbacks[trx.id()] = cb;
+       _app.chain_database()->push_transaction(trx);
+       if( _app.p2p_node() != nullptr )
+          _app.p2p_node()->broadcast_transaction(trx);
+    }
+1、带回调方式的广播交易函数，当交易写进一个区块block时，会回调传回交易的id，区块block的number，区块中此次交易的number。
+
+void graphene::app::network_broadcast_api::broadcast_block(const signed_block &block)
+实现：
+    void network_broadcast_api::broadcast_block( const signed_block& b )
+    {
+       _app.chain_database()->push_block(b);
+       if( _app.p2p_node() != nullptr )
+          _app.p2p_node()->broadcast( net::block_message( b ));
+    }
