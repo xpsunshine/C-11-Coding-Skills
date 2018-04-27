@@ -1,0 +1,33 @@
+c++11 模板元编程
+关于模板实例化（template instantiation）（详见文献[4]模板）：
+
+    指在编译或链接时生成函数模板或类模板的具体实例源代码，即用使用模板时的实参类型替换模板类型参数（还有非类型参数和模板型参数）；
+    隐式实例化（implicit instantiation）：当使用实例化的模板时自动地在当前代码单元之前插入模板的实例化代码，模板的成员函数一直到引用时才被实例化；
+    显式实例化（explicit instantiation）：直接声明模板实例化，模板所有成员立即都被实例化；
+    实例化也是一种特例化，被称为实例化的特例（instantiated (or generated) specialization）。
+
+隐式实例化时，成员只有被引用到才会进行实例化，这被称为推迟实例化（lazy instantiation）。
+
+示例代码如下（bitshares core code：/home/xp/safebox_1/libraries/chain/protocol/asset.cpp）：
+// compile-time table of powers of 10 using template metaprogramming
+
+template< int N >
+struct p10
+{
+   static const int64_t v = 10 * p10<N-1>::v; //和下面的代码构成一个递归计算v的值
+};
+
+template<>
+struct p10<0>
+{
+   static const int64_t v = 1;
+};
+
+const int64_t scaled_precision_lut[19] =
+{
+   p10<  0 >::v, p10<  1 >::v, p10<  2 >::v, p10<  3 >::v,
+   p10<  4 >::v, p10<  5 >::v, p10<  6 >::v, p10<  7 >::v,
+   p10<  8 >::v, p10<  9 >::v, p10< 10 >::v, p10< 11 >::v,
+   p10< 12 >::v, p10< 13 >::v, p10< 14 >::v, p10< 15 >::v,
+   p10< 16 >::v, p10< 17 >::v, p10< 18 >::v
+};
